@@ -10,4 +10,4 @@ This was done with two main technologies:
 
 My Spring MVC RESTful API consumes JSON data from the HUKD API. The Spring API then processes the JSON
 and exposes the transformed HUKD JSON data at the endpoint '/api/products'. This endpoint is accessed
-by my AngularJS client application, which consumes the data in a using a HTTP GET request.
+by my AngularJS client application, which consumes the JSON over HTTP.
