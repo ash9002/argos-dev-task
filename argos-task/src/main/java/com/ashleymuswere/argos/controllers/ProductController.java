@@ -57,7 +57,7 @@ public class ProductController {
                 .queryString("output", "json")
                 .queryString("merchant", "argos")
                 .queryString("results_per_page", "30")
-                .queryString("min_temp", "950")
+                .queryString("order", "hot")
                 .queryString("exclude_expired", "true")
                 .asJson();
 
