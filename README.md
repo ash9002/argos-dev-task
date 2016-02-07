@@ -4,14 +4,14 @@ Argos graduate developer task - Ashley Muswere
 ##How To Run
 
 ### OS X or Linux
-1. From the 'argos-task' directory, run './gradlew bootRun' command in the terminal. This starts the Jetty server on port 8080
+1. From the **'argos-task'** directory, run **'./gradlew bootRun'** command in the terminal. This starts the Jetty server on port 8080
 
-2. In a browser such as Chrome or Firefox, navigate to localhost:8080/app/index.html
+2. In a browser such as Chrome or Firefox, navigate to **localhost:8080/app/index.html**
 
 ### Windows
-1. From the 'argos-task' directory, run 'gradlew bootRun' command on the command line. This starts the Jetty server on port 8080
+1. From the **'argos-task'** directory, run **'gradlew bootRun'** command on the command line. This starts the Jetty server on port 8080
 
-2. In a browser such as Chrome or Firefox, navigate to localhost:8080/app/index.html
+2. In a browser such as Chrome or Firefox, navigate to **localhost:8080/app/index.html**
 
 ###Note: 
 Loading and processing the JSON data to show the hottest deals may take up to 30 - 45 seconds
