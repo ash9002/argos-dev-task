@@ -1,5 +1,5 @@
 # argos-dev-task
-Argos graduate developer task - Ashley Muswere
+Argos graduate developer task - Ashley Muswere.
 
 ##How To Run
 
