@@ -47,7 +47,7 @@ by my AngularJS client application, which consumes the JSON over HTTP.
 
 Much of the processing is done in the controller layer on the server:
 
-I made HTTP requests using the Unirest library. Key URL parameters specifying the following key URL parameters:
+I made HTTP requests using the Unirest library. Key URL parameters are:
 ```java
 //omitted code
 .queryString("merchant", "argos")
@@ -57,9 +57,9 @@ I made HTTP requests using the Unirest library. Key URL parameters specifying th
                 .queryString("exclude_expired", "true")
 //omitted code
 ```
-This gets the 30 deals that are currently 'hot' on the Argos HUKD page. From these I extract the
+This gets the 30 deals that are currently 'hot' on the Argos HUKD page. For each prodct/item/deal returned I concatenate the strings in the 'tags' array of the HUKD JSON to generate a set of keywords that I then use as input for the Ebay HTTP Request. I parse the JSON returned from HUKD and Ebay to extract the relevant values and use them to create new instances of my own product entities. I use the entities to create REST resources that are exposed on the 'api/products' or 'api/recent-products' URIs.
 
-The other endpoint '/api/recent-products' is very similar.
+I've used Spring Data JPA to persist the entities generated from the API calls to HUKD and Ebay in an in-memory HSQLDB database.
 
 Example call to '/api/products' provides an array of JSON objects such as:
 ```javascript
@@ -77,3 +77,7 @@ Example call to '/api/products' provides an array of JSON objects such as:
     "links": []
   }]
 ```
+
+On the client (AngularJS) I receive the JSON data after making an AJAX call to my API from the 'controller' layer. I first sort the data returned by temperature and then store the sorted JSON array in the $scope object. The sorted JSON is accessed in my 'view' layer and I use
+
+The 'links' object is present because of the use of Spring HATEOAS, which allows adding links to other related resources to allow the client to navigate my REST API completely via hypermedia. However, there was no requirement for this in this project and so the 'links' array is empty.
