@@ -78,6 +78,6 @@ Example call to '/api/products' provides an array of JSON objects such as:
   }]
 ```
 
-On the client (AngularJS) I receive the JSON data after making an AJAX call to my API from the 'controller' layer. I first sort the data returned by temperature and then store the sorted JSON array in the $scope object. The sorted JSON is accessed in my 'view' layer and I use
+On the client (AngularJS) I receive the JSON data after making an AJAX call to my API from the 'controller' layer. I first sort the data returned by temperature and then store the sorted JSON array in the $scope object. The sorted JSON is accessed in my 'view' from the $scope where I display the information in a table that can be sorted all criteria accept for 'image'. I used angular-tablesort to implement the sorting of the table data.
 
 The 'links' object is present because of the use of Spring HATEOAS, which allows adding links to other related resources to allow the client to navigate my REST API completely via hypermedia. However, there was no requirement for this in this project and so the 'links' array is empty.
