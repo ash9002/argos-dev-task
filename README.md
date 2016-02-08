@@ -33,7 +33,7 @@ Loading and processing the JSON data to show the hottest deals may take up to 30
 - Able to view separate table containing most recently added deals 
 - Able to access the URL for the competitor product
 
-##Architecture
+##Architecture and Approach Overview
 I've used a client-server REST architecture for the application. 
 
 This was done with two main technologies: 
@@ -41,11 +41,27 @@ This was done with two main technologies:
 1. Spring Framework (Spring HATEOAS, Spring Data JPA, Spring Web MVC) [Server]
 2. AngularJS [Client]
 
-My Spring MVC RESTful API consumes JSON data from the HUKD API. The Spring API then processes the JSON
+My Spring MVC RESTful API consumes JSON data from the HUKD API and eBay API. The Spring API then processes the JSON
 and exposes the transformed HUKD JSON data at the endpoint '/api/products'. This endpoint is accessed
 by my AngularJS client application, which consumes the JSON over HTTP.
 
-Example call to '/api/products' provides following response body:
+Much of the processing is done in the controller layer on the server:
+
+I made HTTP requests using the Unirest library. Key URL parameters specifying the following key URL parameters:
+```java
+//omitted code
+.queryString("merchant", "argos")
+                .queryString("results_per_page", "30")
+                .queryString("order", "hot")
+                .queryString("forum","deals")
+                .queryString("exclude_expired", "true")
+//omitted code
+```
+This gets the 30 deals that are currently 'hot' on the Argos HUKD page. From these I extract the
+
+The other endpoint '/api/recent-products' is very similar.
+
+Example call to '/api/products' provides an array of JSON objects such as:
 ```javascript
   [{
     "title": "Hisense 50EC591U 50 Inch 4K Ultra HD Smart LED TV - £419.99 At Argos",
