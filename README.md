@@ -6,7 +6,7 @@ Argos graduate developer task - Ashley Muswere.
 ### OS X or Linux
 1. Download zip file from project's GitHub and unzip
 
-2. Navigate to argos **/argos-dev-task-master/argos-task/src/main/resources/static** and run **npm install** in the terminal
+2. Navigate to argos **/argos-dev-task-master/argos-task/src/main/resources/static** and (Assuming NodeJS is installed) run **npm install** in the terminal
 
 3. From the **/argos-dev-task-master/argos-task** directory, run the **./gradlew bootRun** command in the terminal. This starts the Jetty server on port 8080
 
@@ -15,7 +15,7 @@ Argos graduate developer task - Ashley Muswere.
 ### Windows
 1. Download zip file from project's GitHub
 
-2. Navigate to argos **/argos-dev-task-master/argos-task/src/main/resources/static** and run **npm install** in the terminal
+2. Navigate to argos **/argos-dev-task-master/argos-task/src/main/resources/static** and (Assuming NodeJS is installed) run **npm install** in the terminal
 
 3. From the **/argos-dev-task-master/argos-task** directory, run the **gradlew bootRun** command on the command line. This starts the Jetty server on port 8080
 
