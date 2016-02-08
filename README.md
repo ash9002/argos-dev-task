@@ -59,6 +59,8 @@ I made HTTP requests using the Unirest library. Key URL parameters are:
 ```
 This gets the 30 deals that are currently 'hot' on the Argos HUKD page. For each prodct/item/deal returned I concatenate the strings in the 'tags' array of the HUKD JSON to generate a set of keywords that I then use as input for the Ebay HTTP Request. I parse the JSON returned from HUKD and Ebay to extract the relevant values and use them to create new instances of my own product entities. I use the entities to create REST resources that are exposed on the 'api/products' or 'api/recent-products' URIs.
 
+Note: If a product is not found on the Ebay API using the strings of keywords mentioned abobe, I set the 'Ebay URL' value to 'NOT FOUND' and 'Ebay Price' value to '£0.00' for that product.
+
 I've used Spring Data JPA to persist the entities generated from the API calls to HUKD and Ebay in an in-memory HSQLDB database.
 
 Example call to '/api/products' provides an array of JSON objects such as:
