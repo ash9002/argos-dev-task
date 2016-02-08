@@ -1,6 +1,8 @@
 # argos-dev-task
 Argos graduate developer task - Ashley Muswere.
 
+This web application fetches and displays Argos product data from the http://www.hotukdeals.com API for the top 10 'hottest' products. The Argos product prices are compared with prices for products on **ebay.co.uk** using the eBay API in a similar way. Basic product data and URLs to the HUKD, Argos and Ebay products are displayed in a tabular format.
+
 ##How To Run
 
 Please contact me on **ashmuswere@gmail.com** if there's any issues running the web application.
