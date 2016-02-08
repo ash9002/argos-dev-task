@@ -27,6 +27,12 @@ import java.util.List;
  * Created by Ashley on 07/02/2016.
  */
 
+/**
+ * This class is the Spring MVC controller that handles HTTP Requests for Product resources
+ * for RECENTLY added deals.
+ * The resources are exposed the URIs specified by the @RequestMapping
+ *
+ */
 @Controller
 @RequestMapping("api")
 public class RecentProductController {
@@ -41,6 +47,7 @@ public class RecentProductController {
 
         RecentProduct entity;
 
+        //Making API call to HUKD, specifying the request URL parameters
         HttpResponse<JsonNode> json = Unirest.get("http://api.hotukdeals.com/rest_api/v2")
                 .header("accept", "application/json")
                 .queryString("key", "d8bc02f4927bb3c8dae658097f715c6a")
@@ -51,6 +58,7 @@ public class RecentProductController {
                 .queryString("exclude_expired", "true")
                 .asJson();
 
+        //Parsing JSON returned from HUKD
         JSONObject obj = new JSONObject(json);
 
         JSONObject body = (JSONObject) obj.get("body");
@@ -83,6 +91,7 @@ public class RecentProductController {
 
                 }
 
+                //Setting product entity properties to those returned by HUKD
                 entity.setTitle(product.get("title").toString().trim().replace("Â", "").replace("â",""));
                 if(!product.get("price").toString().trim().equals("null")) { //OMITTING  deals with no prices in the JSON
                     entity.setPrice(Precision.round(Double.parseDouble(product.get("price").toString().trim()),2));
@@ -96,7 +105,7 @@ public class RecentProductController {
                 entity.setTemperature(Precision.round(Double.parseDouble(product.get("temperature").toString().trim()),2));
                 entity.setSubmitTime(product.get("submit_time").toString().trim());
 
-
+                //persisting product entity
                 RecentProduct saved = recentProductService.createProduct(entity);
 
 
@@ -106,11 +115,15 @@ public class RecentProductController {
             }
 
         }
-
+        //Getting all products created
         list = recentProductService.findAllProducts();
+
+        //Converting products to a list of product resources ready to be returned in the HTTP response
         List<RecentProductResource> products = new RecentProductResourceAssembler().toResources(list);
 
         List<RecentProductResource> resources = products;
+
+        //Returning list of product resources as JSON in HTTP response
         return new ResponseEntity<List<RecentProductResource>>(resources, HttpStatus.OK);
 
     }

@@ -27,30 +27,39 @@ import java.util.*;
  * Created by Ashley on 03/02/2016.
  */
 
+/**
+ * This class is the Spring MVC controller that handles HTTP Requests for Product resources.
+ * The resources are exposed the URIs specified by the @RequestMapping
+ *
+ */
+
 @Controller
 @RequestMapping("api")
 public class ProductController {
 
-    @Autowired
+    //Controller uses product service to call CRUD operations on resources
+    @Autowired //@Autowired tells Spring application context to inject an instance of the product service here
     private ProductService productService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public HttpEntity<List<ProductResource>> findAllProducts() {
-        List<Product> list = productService.findAllProducts();
-        List<ProductResource> products = new ProductResourceAssembler().toResources(list);
-        List<ProductResource> resources = products;
-        return new ResponseEntity<List<ProductResource>>(resources, HttpStatus.OK);
-    }
-
+    /**
+     * This method uses the product service to find all products and returns a
+     * list of product resources in a HttpResponse entity.
+     * The method expects a HTTP GET request from the client.
+     * Before returning a HTTP response, the method makes API calls to the
+     * Argos and Ebay APIs and processes the JSON responses
+     *
+     * @return ResponseEntity, which is a HTTP response entity containing a HTTP status code and the product resource
+     */
     @RequestMapping(method = RequestMethod.GET, value = "products")
-    public HttpEntity<List<ProductResource>> createProduct() throws UnirestException, IOException {
+    public HttpEntity<List<ProductResource>> getProducts() throws UnirestException, IOException {
 
-        List<Product> list = new ArrayList<Product>();
-        List<String> urlList = new ArrayList<String>();
-        List<Double> priceList = new ArrayList<Double>();
+        List<Product> productList = new ArrayList<Product>();
+        List<String> urlList = new ArrayList<String>(); //Ebay URLs
+        List<Double> priceList = new ArrayList<Double>(); //Ebay Prices
 
         Product entity;
 
+        //Making API call to HUKD, specifying the request URL parameters
         HttpResponse<com.mashape.unirest.http.JsonNode> json = Unirest.get("http://api.hotukdeals.com/rest_api/v2")
                 .header("accept", "application/json")
                 .queryString("key", "d8bc02f4927bb3c8dae658097f715c6a")
@@ -58,9 +67,11 @@ public class ProductController {
                 .queryString("merchant", "argos")
                 .queryString("results_per_page", "30")
                 .queryString("order", "hot")
+                .queryString("forum","deals")
                 .queryString("exclude_expired", "true")
                 .asJson();
 
+        //Parsing JSON returned from HUKD
         JSONObject obj = new JSONObject(json);
 
         JSONObject body = (JSONObject) obj.get("body");
@@ -85,19 +96,21 @@ public class ProductController {
 
                 String tagString = " ";
 
+                //Concatenating the tags for each product item to use as input
+                //to search ebay API
                 for(int h = 0; h < tagsArray.length(); h++) {
                     JSONObject tagsObj = (JSONObject) tagsArray.get(h);
 
                     tagString = tagsObj.get("name") + " " + tagString;
-
-
                 }
 
-                entity.setTitle(product.get("title").toString().trim().replace("Â", "").replace("â",""));
-                if(!product.get("price").toString().trim().equals("null")) { //OMITTING  deals with no prices in the JSON
+                //Setting product entity properties to those returned by HUKD
+
+                entity.setTitle(product.get("title").toString().trim().replace("Â", "").replace("â","")); //remove unwanted characters
+                if(!product.get("price").toString().trim().equals("null")) { //OMITTING  deals with no/null prices in the JSON
                     entity.setPrice(Precision.round(Double.parseDouble(product.get("price").toString().trim()),2));
                 } else {
-                    entity.setPrice(1.0); //For products with a null price, set the property to -1
+                    entity.setPrice(0.00); //For products with a null price, set the property to 0.00
                 }
                 entity.setDealUrl(product.get("deal_link").toString().trim());
                 entity.setImageUrl(product.get("deal_image").toString().trim());
@@ -105,6 +118,8 @@ public class ProductController {
                 entity.setProductUrl("http://www.hotukdeals.com/visit?m=5&q="+product.get("deal_image").toString().trim().substring(44,53));
                 entity.setTemperature(Precision.round(Double.parseDouble(product.get("temperature").toString().trim()),2));
 
+                //Making API call to Ebay API using the tags of the returned
+                //HUKD products as the value for the 'keywords' URL parameter to find matching product
                 HttpResponse<com.mashape.unirest.http.JsonNode> ebayJson = Unirest.get("http://svcs.ebay.com/services/search/FindingService/v1")
                         .header("accept", "application/json")
                         .queryString("SECURITY-APPNAME", "AshleyMu-a79d-420a-a406-859ef261f5ae")
@@ -112,12 +127,14 @@ public class ProductController {
                         .queryString("SERVICE-VERSION", "1.0.0")
                         .queryString("GLOBAL-ID","EBAY-GB")
                         .queryString("RESPONSE-DATA-FORMAT", "JSON")
-                        .queryString("keywords",tagString.replace("@","%20").replace("Argos","%20"))
+                        .queryString("keywords",tagString.replace("@","%20").replace("Argos","%20")) //%20 is encoding for blank space
                         .asJson();
 
                 //Default values if price and url isn't found on ebay API (i.e product isn't found)
                 String urlFinal = "NOT FOUND";
                 Double finalPrice = 0.0;
+
+                //Parsing JSON returned by Ebay API
 
                 ObjectMapper mapper = new ObjectMapper();
 
@@ -156,27 +173,38 @@ public class ProductController {
 
                 }
 
+                //Adding each URL for ebay product found into array list
                 urlList.add(urlFinal);
+                //Adding each price for ebay product found into array list
                 priceList.add(Precision.round(finalPrice, 2));
 
+                //setting price and url for product that I'll persist in the in-memory hibernate database
                 entity.setEbayPrice(priceList.get(j));
                 entity.setEbayUrl(urlList.get(j));
+
+                //calculating difference by subtracting price from ebay price
                 entity.setPriceDifference(Precision.round(entity.getEbayPrice()-entity.getPrice(), 2));
 
+                //persisting product entity
                 Product saved = productService.createProduct(entity);
 
 
                 if(saved != null) {
-                    list.add(saved);
+                    productList.add(saved);
                 }
             }
 
         }
 
-        list = productService.findAllProducts();
-        List<ProductResource> products = new ProductResourceAssembler().toResources(list);
+        //Getting all products created
+        productList = productService.findAllProducts();
+
+        //Converting products to a list of product resources ready to be returned in the HTTP response
+        List<ProductResource> products = new ProductResourceAssembler().toResources(productList);
 
         List<ProductResource> resources = products;
+
+        //Returning list of product resources as JSON in HTTP response
         return new ResponseEntity<List<ProductResource>>(resources, HttpStatus.OK);
 
     }

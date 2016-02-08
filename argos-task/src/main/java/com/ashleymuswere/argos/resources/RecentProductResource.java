@@ -5,6 +5,16 @@ import org.springframework.hateoas.ResourceSupport;
 /**
  * Created by Ashley on 07/02/2016.
  */
+
+/**
+ * Essentially the same as entity layer classes
+ * however extends ResourceSupport which will allow the entity to be
+ * converted into a resource using the ResourceAssemblerSupport classes in the
+ * resource assembler layer. The ResourceSupport class is provided by
+ * Spring HATEOAS to allow adding links such as "self" links to the entity when its
+ * exposed/sent to the client
+ */
+
 public class RecentProductResource extends ResourceSupport{
 
     private String title;

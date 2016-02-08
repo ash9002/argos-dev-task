@@ -6,6 +6,11 @@ import javax.persistence.*;
  * Created by Ashley on 03/02/2016.
  */
 
+/**
+ * This class is a simple entity class storing information about a product.
+ * JPA Hibernate is used to store the data in an embedded in-memory HSQLDB database
+ */
+
 @Entity
 @Table(name = "PRODUCT")
 public class Product {
