@@ -3,6 +3,8 @@ Argos graduate developer task - Ashley Muswere.
 
 ##How To Run
 
+Please contact me on **ashmuswere@gmail.com** if there's any issues running the web application.
+
 ### OS X or Linux
 1. Download zip file from project's GitHub and unzip
 
