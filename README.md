@@ -28,6 +28,11 @@ Please contact me on **ashmuswere@gmail.com** if there's any issues running the 
 ###Note: 
 Loading and processing the JSON data to show the hottest deals may take up to 30 seconds
 
+##Additional Features
+- Able to sort by all criteria accept 'image'
+- Able to view separate table containing most recently added deals 
+- Able to access the URL for the competitor product
+
 ##Architecture
 I've used a client-server REST architecture for the application. 
 
