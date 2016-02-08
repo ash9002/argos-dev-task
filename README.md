@@ -47,19 +47,17 @@ by my AngularJS client application, which consumes the JSON over HTTP.
 
 Example call to '/api/products' provides following response body:
 ```javascript
-[{
-    "title": "Babyliss Tourmaline Gold hair straighteners Half Price @ Argos 14.99",
-    "price": 14.99,
-    "dealUrl": "http://www.hotukdeals.com/deals/babyliss-tourmaline-gold-hair-straighteners-half-price-argos-14-99-2389509?aui=1070",
-    "productUrl": "http://www.hotukdeals.com/visit?m=5&q=2389509_1",
-    "description": "Excellent reviews.. free click and collect.",
-    "imageUrl": "http://static.hotukdeals.com/images/threads/2389509_1.jpg",
-    "temperature": 238.35,
-    "ebayPrice": 0,
-    "ebayUrl": "NOT FOUND",
-    "priceDifference": -14.99,
+  [{
+    "title": "Hisense 50EC591U 50 Inch 4K Ultra HD Smart LED TV - £419.99 At Argos",
+    "price": 419.99,
+    "dealUrl": "http://www.hotukdeals.com/deals/hisense-50ec591u-50-inch-4k-ultra-hd-smart-led-tv-419-99-argos-2389427?aui=1070",
+    "productUrl": "http://www.hotukdeals.com/visit?m=5&q=2389427_1",
+    "description": "Hisense 50EC591U 50 Inch 4K Ultra HD Smart LED TV\n\nhttp://www.argos.co.uk/beta/static/Product/partNumber/4247072.htm\n\nURL seems broke, might want to use the one here\n- DsK",
+    "imageUrl": "http://static.hotukdeals.com/images/threads/2389427_1.jpg",
+    "temperature": 411.45,
+    "ebayPrice": 425,
+    "ebayUrl": "http://www.ebay.co.uk/itm/Hisense-50-Inch-Smart-4K-Ultra-HD-LED-TV-UB50EC591UWTSUK-/222008559772",
+    "priceDifference": 5.01,
     "links": []
-  },
-  //etc.
-  ]
+  }]
 ```
