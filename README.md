@@ -44,3 +44,22 @@ This was done with two main technologies:
 My Spring MVC RESTful API consumes JSON data from the HUKD API. The Spring API then processes the JSON
 and exposes the transformed HUKD JSON data at the endpoint '/api/products'. This endpoint is accessed
 by my AngularJS client application, which consumes the JSON over HTTP.
+
+Example call to '/api/products' provides following response body:
+```javascript
+[{
+    "title": "Babyliss Tourmaline Gold hair straighteners Half Price @ Argos 14.99",
+    "price": 14.99,
+    "dealUrl": "http://www.hotukdeals.com/deals/babyliss-tourmaline-gold-hair-straighteners-half-price-argos-14-99-2389509?aui=1070",
+    "productUrl": "http://www.hotukdeals.com/visit?m=5&q=2389509_1",
+    "description": "Excellent reviews.. free click and collect.",
+    "imageUrl": "http://static.hotukdeals.com/images/threads/2389509_1.jpg",
+    "temperature": 238.35,
+    "ebayPrice": 0,
+    "ebayUrl": "NOT FOUND",
+    "priceDifference": -14.99,
+    "links": []
+  },
+  //etc.
+  ]
+```
